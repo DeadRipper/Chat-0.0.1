@@ -8,18 +8,19 @@ namespace ChatClient
     class Program
     {
         static string userName;
-        private const string host = "127.0.0.1";
-        private const int port = 8888;
+        private const string host = "176.36.70.147";
+        private const int port = 54044;
         static TcpClient client;
         static NetworkStream stream;
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.Write("Введите свое имя: ");
             userName = Console.ReadLine();
             client = new TcpClient();
             try
             {
+                if(client.Client.Disconnect = false)
                 client.Connect(host, port); //подключение клиента
                 stream = client.GetStream(); // получаем поток
 
@@ -78,7 +79,7 @@ namespace ChatClient
                 {
                     Console.WriteLine("Подключение прервано!"); //соединение было прервано
                     Console.ReadLine();
-                    //Disconnect();
+                    Disconnect();
                 }
             }
         }
