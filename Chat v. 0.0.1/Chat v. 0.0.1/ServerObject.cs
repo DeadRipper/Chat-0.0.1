@@ -11,8 +11,9 @@ namespace Chat_v._0._0._1
 {
     public class ServerObject
     {
-        static TcpListener tcpListener; // сервер для прослушивания
+        public TcpListener tcpListener; // сервер для прослушивания
         List<ClientObject> clients = new List<ClientObject>(); // все подключения
+        DataForChat dfc = new DataForChat();
 
         protected internal void AddConnection(ClientObject clientObject)
         {
@@ -33,7 +34,7 @@ namespace Chat_v._0._0._1
             {
                 tcpListener = new TcpListener(IPAddress.Any, 8888);
                 tcpListener.Start();
-                Console.WriteLine("Сервер запущен. Ожидание подключений...");
+                //Console.WriteLine("Сервер запущен. Ожидание подключений...");
 
                 while (true)
                 {
@@ -46,7 +47,7 @@ namespace Chat_v._0._0._1
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
                 Disconnect();
             }
         }
@@ -72,7 +73,7 @@ namespace Chat_v._0._0._1
             {
                 clients[i].Close(); //отключение клиента
             }
-            Environment.Exit(0); //завершение процесса
+            dfc.InitializeComponent(); //завершение процесса
         }
     }
 }

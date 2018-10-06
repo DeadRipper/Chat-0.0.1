@@ -28,36 +28,32 @@ namespace Chat_v._0._0._1
             InitializeComponent();
         }
 
-        static string userName;
-        //public string host = ip_textbox.Text;
-        //public int port = port_textbox.Text;
-        static TcpClient client;
-        static NetworkStream stream;
+        DataForChat dfc = new DataForChat();
+        //ClientObject cl = new ClientObject();
+        public TcpClient client;
+        public NetworkStream stream;
 
-        public static void Work()
+        public void Work()
         {
-            Console.Write("Введите свое имя: ");
-            userName = Console.ReadLine();
             client = new TcpClient();
             try
             {
                 //if(client.Client.Disconnect = false)
-                client.Connect(ip_textbox.Text, port_textbox.Text); //подключение клиента
+                client.Connect(dfc.ip_textbox_data_prog.Text, Convert.ToInt32(dfc.host_textbox_dataprog.Text)); //подключение клиента
                 stream = client.GetStream(); // получаем поток
 
-                string message = userName;
+                string message = dfc.UserName_text_box.Text;
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 stream.Write(data, 0, data.Length);
 
                 // запускаем новый поток для получения данных
                 Thread receiveThread = new Thread(new ThreadStart(ReceiveMessage));
                 receiveThread.Start(); //старт потока
-                Console.WriteLine("Добро пожаловать, {0}", userName);
                 SendMessage();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                
             }
             finally
             {
@@ -66,20 +62,20 @@ namespace Chat_v._0._0._1
         }
 
         // отправка сообщений
-        static void SendMessage()
-        {
-            Console.WriteLine("Введите сообщение: ");
 
+        // change block
+        public void SendMessage()
+        {
             while (true)
             {
-                string message = Console.ReadLine();
+                string message = Write_textbox.Text;
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 stream.Write(data, 0, data.Length);
             }
         }
 
         // получение сообщений
-        static void ReceiveMessage()
+        public void ReceiveMessage()
         {
             while (true)
             {
@@ -92,21 +88,22 @@ namespace Chat_v._0._0._1
                     {
                         bytes = stream.Read(data, 0, data.Length);
                         builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                    } while (stream.DataAvailable);
+                    }
+                    while (stream.DataAvailable);
 
                     string message = builder.ToString();
-                    Console.WriteLine(message); //вывод сообщения
+                    MainTextBlock.Text = message; //вывод сообщения
                 }
                 catch
                 {
-                    Console.WriteLine("Подключение прервано!"); //соединение было прервано
-                    Console.ReadLine();
+                    //Console.WriteLine("Подключение прервано!"); //соединение было прервано
+                    //Console.ReadLine();
                     Disconnect();
                 }
             }
         }
 
-        static void Disconnect()
+        public void Disconnect()
         {
             if (stream != null)
                 stream.Close(); //отключение потока
@@ -118,12 +115,12 @@ namespace Chat_v._0._0._1
 
         private void MainButton_Click(object sender, RoutedEventArgs e)
         {
-            ServerObject chat = new ServerObject();
-            Thread ListenThread = new Thread(new ThreadStart(chat.Listen));
-            ListenThread.Start();
-            string data = TextBox.Text.ToString();
-            chat.
-            data = MainTextBlock.Text;
+            //ServerObject chat = new ServerObject();
+            //Thread ListenThread = new Thread(new ThreadStart(chat.Listen));
+            //ListenThread.Start();
+            //string data = Write_textbox.Text.ToString();
+            //data = MainTextBlock.Text;
+            SendMessage();
         }
     }
 

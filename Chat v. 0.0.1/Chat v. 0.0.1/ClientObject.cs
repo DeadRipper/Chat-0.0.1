@@ -13,7 +13,6 @@ namespace Chat_v._0._0._1
     {
         protected internal string Id { get; private set; }
         protected internal NetworkStream Stream { get; private set; }
-        string userName;
         TcpClient client;
         ServerObject server; // объект сервера
 
@@ -29,29 +28,31 @@ namespace Chat_v._0._0._1
         {
             try
             {
+                DataForChat dfc = new DataForChat();
+                MainWindow main = new MainWindow();
                 Stream = client.GetStream();
                 // получаем имя пользователя
                 string message = GetMessage();
-                userName = message;
+                dfc.UserName_text_box.Text = message;
 
-                message = userName + " вошел в чат";
+                message = dfc.UserName_text_box.Text + " вошел в чат";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 server.BroadcastMessage(message, this.Id);
-                Console.WriteLine(message);
+                main.MainTextBlock.Text = message;
                 // в бесконечном цикле получаем сообщения от клиента
                 while (true)
                 {
                     try
                     {
                         message = GetMessage();
-                        message = String.Format("{0}: {1}", userName, message);
-                        Console.WriteLine(message);
+                        message = String.Format("{0}: {1}", dfc.UserName_text_box.Text, message);
+                        main.MainTextBlock.Text = message;
                         server.BroadcastMessage(message, this.Id);
                     }
                     catch
                     {
-                        message = String.Format("{0}: покинул чат", userName);
-                        Console.WriteLine(message);
+                        message = String.Format("{0}: покинул чат", dfc.UserName_text_box.Text);
+                        main.MainTextBlock.Text = message;
                         server.BroadcastMessage(message, this.Id);
                         break;
                     }
@@ -59,7 +60,8 @@ namespace Chat_v._0._0._1
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MainWindow main = new MainWindow();
+                main.MainTextBlock.Text = e.Message;
             }
             finally
             {
