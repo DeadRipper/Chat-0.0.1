@@ -13,5 +13,3 @@ C:\Users\dmitr\source\repos\Chat v. 0.0.1\Chat v. 0.0.1\obj\Debug\Chat v. 0.0.1.
 C:\Users\dmitr\source\repos\Chat v. 0.0.1\Chat v. 0.0.1\obj\Debug\Chat v. 0.0.1.csproj.CoreCompileInputs.cache
 C:\Users\dmitr\source\repos\Chat v. 0.0.1\Chat v. 0.0.1\obj\Debug\Chat v. 0.0.1.exe
 C:\Users\dmitr\source\repos\Chat v. 0.0.1\Chat v. 0.0.1\obj\Debug\Chat v. 0.0.1.pdb
-C:\Users\dmitr\source\repos\Chat v. 0.0.1\Chat v. 0.0.1\obj\Debug\DataForChat.g.cs
-C:\Users\dmitr\source\repos\Chat v. 0.0.1\Chat v. 0.0.1\obj\Debug\DataForChat.baml

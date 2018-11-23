@@ -9,11 +9,11 @@ using System.Net.Sockets;
 
 namespace Chat_v._0._0._1
 {
-    public class ServerObject
+    class ServerObject
     {
-        public TcpListener tcpListener; // сервер для прослушивания
+        static TcpListener tcpListener; // сервер для прослушивания
         List<ClientObject> clients = new List<ClientObject>(); // все подключения
-        DataForChat dfc = new DataForChat();
+        MainWindow window = new MainWindow();
 
         protected internal void AddConnection(ClientObject clientObject)
         {
@@ -34,7 +34,7 @@ namespace Chat_v._0._0._1
             {
                 tcpListener = new TcpListener(IPAddress.Any, 8888);
                 tcpListener.Start();
-                //Console.WriteLine("Сервер запущен. Ожидание подключений...");
+                window.MainTextBlock.Text = "Сервер запущен. Ожидание подключений...";
 
                 while (true)
                 {
@@ -47,7 +47,7 @@ namespace Chat_v._0._0._1
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+                window.MainTextBlock.Text = ex.Message;
                 Disconnect();
             }
         }
@@ -73,7 +73,7 @@ namespace Chat_v._0._0._1
             {
                 clients[i].Close(); //отключение клиента
             }
-            dfc.InitializeComponent(); //завершение процесса
+            window.MainTextBlock.Text = "Stop"; //завершение процесса
         }
     }
 }

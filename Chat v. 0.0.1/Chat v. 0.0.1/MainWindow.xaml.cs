@@ -28,32 +28,36 @@ namespace Chat_v._0._0._1
             InitializeComponent();
         }
 
-        DataForChat dfc = new DataForChat();
-        //ClientObject cl = new ClientObject();
+        public string userName;
+        private const string host = "176.36.70.147";
+        private const int port = 80;
         public TcpClient client;
         public NetworkStream stream;
 
-        public void Work()
+        public void Chat()
         {
+            MainTextBlock.Text = "Введите свое имя: ";
+            userName = Console.ReadLine();
             client = new TcpClient();
             try
             {
                 //if(client.Client.Disconnect = false)
-                client.Connect(dfc.ip_textbox_data_prog.Text, Convert.ToInt32(dfc.host_textbox_dataprog.Text)); //подключение клиента
+                client.Connect(host, port); //подключение клиента
                 stream = client.GetStream(); // получаем поток
 
-                string message = dfc.UserName_text_box.Text;
+                string message = userName;
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 stream.Write(data, 0, data.Length);
 
                 // запускаем новый поток для получения данных
                 Thread receiveThread = new Thread(new ThreadStart(ReceiveMessage));
                 receiveThread.Start(); //старт потока
+                MainTextBlock.Text = "Добро пожаловать, {userName}";
                 SendMessage();
             }
             catch (Exception ex)
             {
-                
+                MainTextBlock.Text = ex.Message;
             }
             finally
             {
@@ -61,19 +65,16 @@ namespace Chat_v._0._0._1
             }
         }
 
-        // отправка сообщений
-
-        // change block
         public void SendMessage()
         {
+            MainTextBlock.Text = "Введите сообщение: ";
             while (true)
             {
-                string message = Write_textbox.Text;
+                string message = Write_textbox.Text.ToString();
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 stream.Write(data, 0, data.Length);
             }
         }
-
         // получение сообщений
         public void ReceiveMessage()
         {
@@ -92,12 +93,11 @@ namespace Chat_v._0._0._1
                     while (stream.DataAvailable);
 
                     string message = builder.ToString();
-                    MainTextBlock.Text = message; //вывод сообщения
+                    MainTextBlock.Text = message;//вывод сообщения
                 }
                 catch
                 {
-                    //Console.WriteLine("Подключение прервано!"); //соединение было прервано
-                    //Console.ReadLine();
+                    MainTextBlock.Text = "Подключение прервано!"; //соединение было прервано
                     Disconnect();
                 }
             }
@@ -106,20 +106,14 @@ namespace Chat_v._0._0._1
         public void Disconnect()
         {
             if (stream != null)
-                stream.Close(); //отключение потока
+                stream.Close();//отключение потока
             if (client != null)
-                client.Close(); //отключение клиента
+                client.Close();//отключение клиента
             Environment.Exit(0); //завершение процесса
         }
 
-
         private void MainButton_Click(object sender, RoutedEventArgs e)
         {
-            //ServerObject chat = new ServerObject();
-            //Thread ListenThread = new Thread(new ThreadStart(chat.Listen));
-            //ListenThread.Start();
-            //string data = Write_textbox.Text.ToString();
-            //data = MainTextBlock.Text;
             SendMessage();
         }
     }

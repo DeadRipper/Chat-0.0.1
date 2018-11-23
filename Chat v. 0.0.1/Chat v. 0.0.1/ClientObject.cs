@@ -9,12 +9,14 @@ using System.IO;
 
 namespace Chat_v._0._0._1
 {
-    public class ClientObject
+    class ClientObject
     {
         protected internal string Id { get; private set; }
         protected internal NetworkStream Stream { get; private set; }
+        string userName;
         TcpClient client;
         ServerObject server; // объект сервера
+        MainWindow window = new MainWindow();
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject)
         {
@@ -28,31 +30,29 @@ namespace Chat_v._0._0._1
         {
             try
             {
-                DataForChat dfc = new DataForChat();
-                MainWindow main = new MainWindow();
                 Stream = client.GetStream();
                 // получаем имя пользователя
                 string message = GetMessage();
-                dfc.UserName_text_box.Text = message;
+                userName = message;
 
-                message = dfc.UserName_text_box.Text + " вошел в чат";
+                message = userName + " вошел в чат";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 server.BroadcastMessage(message, this.Id);
-                main.MainTextBlock.Text = message;
+                window.MainTextBlock.Text = message;
                 // в бесконечном цикле получаем сообщения от клиента
                 while (true)
                 {
                     try
                     {
                         message = GetMessage();
-                        message = String.Format("{0}: {1}", dfc.UserName_text_box.Text, message);
-                        main.MainTextBlock.Text = message;
+                        message = String.Format("{0}: {1}", userName, message);
+                        window.MainTextBlock.Text = message;
                         server.BroadcastMessage(message, this.Id);
                     }
                     catch
                     {
-                        message = String.Format("{0}: покинул чат", dfc.UserName_text_box.Text);
-                        main.MainTextBlock.Text = message;
+                        message = String.Format("{0}: покинул чат", userName);
+                        window.MainTextBlock.Text = message;
                         server.BroadcastMessage(message, this.Id);
                         break;
                     }
@@ -60,8 +60,7 @@ namespace Chat_v._0._0._1
             }
             catch (Exception e)
             {
-                MainWindow main = new MainWindow();
-                main.MainTextBlock.Text = e.Message;
+                window.MainTextBlock.Text = e.Message;
             }
             finally
             {
