@@ -8,8 +8,8 @@ namespace ChatClient
     class Program
     {
         static string userName;
-        private const string host = "176.36.70.147";
-        private const int port = 54044;
+        private const string host = "localhost";
+        private const int port = 80;
         static TcpClient client;
         static NetworkStream stream;
 
@@ -20,7 +20,7 @@ namespace ChatClient
             client = new TcpClient();
             try
             {
-                if(client.Client.Disconnect = false)
+                //if(client.Client.Disconnect = false)
                 client.Connect(host, port); //подключение клиента
                 stream = client.GetStream(); // получаем поток
 
